@@ -2,10 +2,10 @@
 
 ## Crea una jaula de Faraday para bloquear señales GPS, Wi-fi, celulares y bluetooth de manera sencilla. 
 
-Comprar una versión comercial de una jaula de Faraday pueden ser costoso, por eso construir una opción casera efectiva y con materiales de facil acceso podria ser viable, te enseñaremos como...
+> **Comprar una versión comercial de una jaula de Faraday pueden ser costoso, por eso construir una opción casera efectiva y con materiales de facil acceso podria ser viable, te enseñaremos como...**
 
 ### ¿Cómo funciona?
-> Una jaula de Faraday bloquea las señales electromagnéticas al encerrar el dispositivo en un material conductor que impide la entrada o salida de ondas de radio, incluyendo señales GPS, Wi-Fi, Bluetooth y redes celulares.
+Una jaula de Faraday bloquea las señales electromagnéticas al encerrar el dispositivo en un material conductor que impide la entrada o salida de ondas de radio, incluyendo señales GPS, Wi-Fi, Bluetooth y redes celulares.
 
 ### Materiales necesarios:
 1. Malla metálica de cobre o aluminio (también puedes usar tela con hilos metálicos conductores).
