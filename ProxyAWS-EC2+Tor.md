@@ -37,8 +37,8 @@
 - Reglas de Salida:
 **Las reglas de salida (egress) controlan hacia dónde puede conectarse a una instancia.**
  
- - `UDP (DNS) :53` 
-
+ - `(ALL)` 
+(Todo el trafico, todos los protocolos, todos los puertos)
 -**0.0.0.0/0**
  - Permite que la instancia EC2 haga cualquier tipo de conexión hacia afuera (HTTP, HTTPS, DNS, Tor, etc.).
  - Es la más usada por simplicidad y no suele representar riesgo.
@@ -68,17 +68,19 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?)
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
-**(Puede que debas hacer un reboot)**
-puedes verificar con este comando:
+**(Verifica si debes hacer un reboot o solo haz reboot)**
 
 ```bash
 [ -f /var/run/reboot-required ] && echo "⚠️ Reboot required"
+```
+```bash
+sudo reboot
 ```
 
 ### 2.2 Crea un alias para establecer tu conexion SSH (opcional)
 ---
 
-## 3. Instalación de Privoy y Tor
+## 3. Instalación de Privoxy y Tor
 
 ### Instala Privoxy (para navegación HTTP/HTTPS):
 
@@ -92,9 +94,9 @@ sudo apt install privoxy -y
 sudo nano /etc/privoxy/config
 ```
 
-Añade o en el lugar que prefieras del archivo /config omitiendo cualquier # al principio
-(Revisa el arhivo completo ya que privoxy tiene configuradas listen-address 127.0.0.1:8118 
-by default por lo que debes borrarlas o comentarlas con #)
+Añade o en el lugar que prefieras del archivo /config omitiendo cualquier # al principio  
+(Revisa el arhivo completo ya que privoxy tiene configuradas listen-address 127.0.0.1:8118 by default  
+por lo que debes borrarlas o comentarlas con #)
 
 ```bash
 listen-address 0.0.0.0:8118
