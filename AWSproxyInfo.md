@@ -1,5 +1,6 @@
 # CONFIGURA UN PROXY EN AWS
-Puedes usar un servicio de computación en la nube como Amazon EC2 para montar tu proxy. Este es un método más profesional y escalable.
+
+### Configura un proxy en la nube con el servicio EC2 de Amazon Cloud (AWS) y ciframiento a traves de TOR de manera profesional, escalable y GRATUITA!! 
 
 ¿Cómo funciona?
 Creas una instancia EC2 (preferiblemente Linux) en AWS.
@@ -27,26 +28,14 @@ Acceso constante a un proxy desde cualquier lugar, sin depender de tu PC.
 
 Configuraciones avanzadas con múltiples dispositivos.
 
-Si quieres máxima privacidad y anonimato: Usa un servidor configurado con Tor (Orbot en Android) y/o VPN adicional.
-
-Yo:
-Responde breve: puedo configurar un proxy con Amazon cloud, integrando protocolos de cifrado de Tor (Onion supongo), restringir el acceso de IPs y como se integraría para el uso conjunto de mi PC y Android
 
 
-ChatGPT Plus:
-Sí, puedes configurar un proxy en Amazon Cloud (AWS EC2) con protocolos de cifrado de Tor usando Privoxy o Dante junto con Tor (Onion Routing). Puedes restringir el acceso permitiendo solo IPs específicas en el firewall de AWS (Security Groups).
-
-Comparativa: Squid vs. Dante (SOCKS5)
-Característica	Squid (HTTP/HTTPS)	Dante (SOCKS5)
-Protocolo	HTTP, HTTPS	SOCKS5
-Privacidad	Media	Alta (mejor anonimato)
-Compatibilidad	Navegadores, apps configurables	Apps compatibles con SOCKS5
-Facilidad de uso	Fácil de configurar	Requiere más configuración
-Versatilidad	Mejor para navegación web	Mejor para apps que soportan SOCKS5
-WhatsApp Compatible	Sí, configurado correctamente.	Sí, pero puede requerir configuración adicional.
-
-Integración con PC y Android:
 En AWS EC2: Instalas Tor y configuras un proxy (Privoxy o Dante) para enrutar tráfico a través de Tor.
+1. Diferencia entre usar Privoxy vs Dante con Tor:
+Privoxy + Tor: Proxy HTTP → transforma tráfico HTTP en SOCKS5 → útil para apps que no soportan SOCKS5 nativo.
+Dante + Tor: Proxy SOCKS → más directo y eficiente para apps compatibles con SOCKS5 → más flexible para TCP.
+Si tus clientes soportan SOCKS5, Dante es más directo. Si no, Privoxy te traduce HTTP a SOCKS.
+
 
 Restricción de IPs: Configuras Security Groups para permitir solo tus IPs o usar autenticación con contraseña en el proxy.
 
@@ -99,3 +88,16 @@ Elastic IP: Gratis si la usas siempre.
 Total Aproximado: Entre $0 y $5 al mes si no excedes el nivel gratuito.
 
 Ultraseguridad.
+
+¿Qué significa /32 en tus reglas de seguridad?
+La máscara /32 en una IP (por ejemplo: 130.250.228.189/32) limita el acceso exclusivamente a un solo dispositivo con esa IP pública exacta.
+
+Si planeas conectarte desde distintos lugares o redes, te conviene usar:
+
+Una IP elástica de AWS para tu cliente (si es otra instancia).
+
+O una IP dinámica, y actualizar el Security Group desde una app/script si cambia.
+
+Privoxy escucha en 8118 para recibir peticiones entrantes.
+
+Pero desde tu instancia puede salir por cualquier puerto, no necesita una regla para 8118 en salida salvo que estés haciendo peticiones desde el proxy hacia otro proxy en ese puerto específico.
