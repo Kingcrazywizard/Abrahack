@@ -90,7 +90,7 @@ wsl --install
 Así Listas las distribuciones disponibles
 ```bash
 wsl --list --online
-## 
+## Instalamos -d de nuestra preferencia
 wsl --install -d Ubuntu-24.04
 ```
 Reboot 
@@ -104,9 +104,16 @@ wsl --list --online
 Establecer WSL 2 como versión por defecto:
 ```bash
 wsl --set-default-version 2
-
 ```
----  
+Cambiá los permisos del .pem
+AWS requiere que el archivo .pem tenga permisos seguros. Ejecutá esto desde WSL:
+```bash
+chmod 400 /mnt/c/Users/TuUsuario/Descargas/mi-clave.pem
+```
+Ejecuta tu Instancia desde tu consola WSL ubuntu@
+```bash
+ssh -i /mnt/c/Users/TU_USUARIO/X/tu-clave.pem ubuntu@IPv4_Instancia
+```
 
 ## 3. Instalación de Privoy y Tor
 
@@ -163,15 +170,24 @@ Guarda y cierra.
 sudo systemctl restart tor
 ```
 ---
+## BONUS
+Cambia el puerto SSH del 22 a otro 
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+busca 
+```bash
+#Port 22
+## Y cambia por el que escojas
+Port 65022
+```
+- Abre el puerto en el Security Group (SG) de tu instancia
+Ir a EC2 > Seguridad > Grupos de seguridad > [Tu SG]
 
-## 4. Configuración de Seguridad (Restricción de IPs)
-
-- En AWS Console:
-  - Ve a **Security Groups** de tu instancia.
-  - Edita las reglas de entrada para permitir solo tu IP en los puertos `9050 (Tor)` y `8118 (Privoxy)`.
-
----
-
+Agregar regla de entrada:
+Tipo: TCP personalizado
+Puerto: 65022
+Origen: tu IP (x.x.x.x/32) o un rango que controles
 ## 5. Configuración en Android y PC
 
 ### En Android:
