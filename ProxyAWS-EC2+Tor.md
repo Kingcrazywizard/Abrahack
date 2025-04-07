@@ -68,8 +68,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?)
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
-**(Puede que debas hacer un reboot)**
-puedes verificar con este comando:
+**(Verifica si debes hacer un reboot o solo haz reboot)**
 
 ```bash
 [ -f /var/run/reboot-required ] && echo "⚠️ Reboot required"
@@ -81,32 +80,7 @@ sudo reboot
 ### 2.2 Crea un alias para establecer tu conexion SSH (opcional)
 ---
 
-## 3. Instalación de Privoxy y Tor
-
-### ! BONUS 
-A partir de aqui se recomienda utilizar WSL + @Ubuntu-24.04
-si no lo tienes:
-**este metodo instala Ubuntu por defecto**
-  ```bash
-  wsl --install
-  ```
-Así Listas las distribuciones disponibles
-  ```bash
-  wsl --list --online
-  ## 
-  wsl --install -d Ubuntu-24.04
-  ```
-
-  Reboot 
-  ```bash
-  shutdown.exe /r
-  ```
-  Lista las distribuciones disponibles
-  ```bash
-  wsl --list --online
-  ```
-  
-
+## 3. Instalación de Privoy y Tor
 
 ### Instala Privoxy (para navegación HTTP/HTTPS):
 
