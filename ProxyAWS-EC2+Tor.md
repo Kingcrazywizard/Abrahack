@@ -80,15 +80,42 @@ sudo reboot
 ### 2.2 Crea un alias para establecer tu conexion SSH (opcional)
 ---
 
+### ! BONUS 
+A partir de aqui se recomienda utilizar WSL + @Ubuntu-24.04
+si no lo tienes:
+**este metodo instala Ubuntu por defecto**
+```bash
+wsl --install
+```
+Así Listas las distribuciones disponibles
+```bash
+wsl --list --online
+## 
+wsl --install -d Ubuntu-24.04
+```
+Reboot 
+```bash
+shutdown.exe /r
+```
+Lista las distribuciones disponibles
+```bash
+wsl --list --online
+```
+Establecer WSL 2 como versión por defecto:
+```bash
+wsl --set-default-version 2
+
+```
+---  
+
 ## 3. Instalación de Privoy y Tor
 
 ### Instala Privoxy (para navegación HTTP/HTTPS):
-
+```bash
 sudo apt install privoxy -y
 ```
 
 ### Edita su configuración:
-
 ```bash
 sudo nano /etc/privoxy/config
 ```
