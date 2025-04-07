@@ -13,7 +13,7 @@
 
 - Haz clic en "Launch Instance".
 - **Nombre:** Ponle un nombre como `Proxy-Tor-Server`.
-- **AMI:** Selecciona `Amazon Linux 2`, `Ubuntu 20.04` o superior.
+- **AMI:** Selecciona `Amazon Linux 2`, `Ubuntu 20.04` o superior. (Usaremos @ubuntu24.04)
 - **Tipo de instancia:** `t2.micro` (gratis con el nivel gratuito).
 - **Almacenamiento:** `30 GB` (gratis con el nivel gratuito).
 - **Par de claves:** Crea o usa un par de claves para SSH. Descárgalo y guárdalo en un lugar seguro.
@@ -37,8 +37,8 @@
 - Reglas de Salida:
 **Las reglas de salida (egress) controlan hacia dónde puede conectarse a una instancia.**
  
- - `UDP (DNS) :53` 
-
+ - `(ALL)` 
+(Todo el trafico, todos los protocolos, todos los puertos)
 -**0.0.0.0/0**
  - Permite que la instancia EC2 haga cualquier tipo de conexión hacia afuera (HTTP, HTTPS, DNS, Tor, etc.).
  - Es la más usada por simplicidad y no suele representar riesgo.
@@ -74,15 +74,42 @@ puedes verificar con este comando:
 ```bash
 [ -f /var/run/reboot-required ] && echo "⚠️ Reboot required"
 ```
+```bash
+sudo reboot
+```
 
 ### 2.2 Crea un alias para establecer tu conexion SSH (opcional)
 ---
 
-## 3. Instalación de Privoy y Tor
+## 3. Instalación de Privoxy y Tor
+
+### ! BONUS 
+A partir de aqui se recomienda utilizar WSL + @Ubuntu-24.04
+si no lo tienes:
+**este metodo instala Ubuntu por defecto**
+  ```bash
+  wsl --install
+  ```
+Así Listas las distribuciones disponibles
+  ```bash
+  wsl --list --online
+  ## 
+  wsl --install -d Ubuntu-24.04
+  ```
+
+  Reboot 
+  ```bash
+  shutdown.exe /r
+  ```
+  Lista las distribuciones disponibles
+  ```bash
+  wsl --list --online
+  ```
+  
+
 
 ### Instala Privoxy (para navegación HTTP/HTTPS):
 
-```bash
 sudo apt install privoxy -y
 ```
 
@@ -92,9 +119,9 @@ sudo apt install privoxy -y
 sudo nano /etc/privoxy/config
 ```
 
-Añade o en el lugar que prefieras del archivo /config omitiendo cualquier # al principio
-(Revisa el arhivo completo ya que privoxy tiene configuradas listen-address 127.0.0.1:8118 
-by default por lo que debes borrarlas o comentarlas con #)
+Añade o en el lugar que prefieras del archivo /config omitiendo cualquier # al principio  
+(Revisa el arhivo completo ya que privoxy tiene configuradas listen-address 127.0.0.1:8118 by default  
+por lo que debes borrarlas o comentarlas con #)
 
 ```bash
 listen-address 0.0.0.0:8118
