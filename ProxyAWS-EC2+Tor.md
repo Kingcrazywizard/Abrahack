@@ -20,7 +20,7 @@
 - Haz clic en "Launch Instance".
 
 ### 1.3 Security Group (firewall):
-- **Los Security Groups son como firewalls por defecto a nivel de instancia.**
+**Los Security Groups son como firewalls por defecto a nivel de instancia.**
 
 - Reglas de Entrada:
 **Las reglas de entrada (ingress) controlan quienes (IPs) y como (Protocols & Ports) pueden conectarse a una instancia**
@@ -28,21 +28,25 @@
   - `(SSH) :22 (defecto)` para acceso remoto 
   - `(SOCKS5) :9050` para Tor.
   - `(HTTP/HTTPS) :8118` si decides usar Privoxy.
- 
- - **IP_PÚBLICA/32** 
-  - La máscara /32 en una IP limita el acceso exclusivamente a una sola IP pública exacta.
-  - Permite usar tu proxy desde diferentes dispositivos simultáneamente, si ambos están en la misma red local y comparten la misma IP pública.
-  Porque desde la perspectiva del servidor EC2 (Security Group), ambos dispositivos están saliendo por la misma IP pública del router
+<details>
+<summary>IP_PÚBLICA/32</summary> 
 
-- Reglas de Salida:
+  - La máscara /32 en una IP limita el acceso exclusivamente a una sola IP pública exacta.
+  - Permite usar tu proxy desde diferentes dispositivos simultáneamente, si ambos están en la misma red local y comparten la misma IP pública. Porque desde la perspectiva del servidor EC2 (Security Group), ambos dispositivos están saliendo por la misma IP pública del router
+
+**Es probable que tu ISP no te proporcione una IP_PUBLICA estatica por lo que podrias:**
+ - Usar un DNS Dinámico DDNS
+ - Crear un VPN entre tus dispositivos y la instancia
+
+</details>
+
+- Reglas de Salida: 
 **Las reglas de salida (egress) controlan hacia dónde puede conectarse a una instancia.**
- 
- - `(ALL)` 
-(Todo el trafico, todos los protocolos, todos los puertos)
--**0.0.0.0/0**
- - Permite que la instancia EC2 haga cualquier tipo de conexión hacia afuera (HTTP, HTTPS, DNS, Tor, etc.).
- - Es la más usada por simplicidad y no suele representar riesgo.
- - AWS automáticamente permite el tráfico de respuesta (return traffic) gracias a una característica llamada “stateful firewall”, que recuerda las conexiones iniciadas desde adentro y permite su respuesta sin necesidad de reglas especiales de entrada.
+
+  - `(ALL) 0.0.0.0/0` Todo el trafico, todos los protocolos, todos los puertos
+  - Permite que la instancia EC2 haga cualquier tipo de conexión hacia afuera (HTTP, HTTPS, DNS, Tor, etc.).
+  - Es la más usada por simplicidad y no suele representar riesgo.
+  - AWS automáticamente permite el tráfico de respuesta (return traffic) gracias a una característica llamada “stateful firewall”, que recuerda las conexiones iniciadas desde adentro y permite su respuesta sin necesidad de reglas especiales de entrada.
 ---
 
 ## 2. Configuración del Servidor (EC2)
@@ -50,12 +54,13 @@
 ### 2.1 Accede por SSH a tu instancia:
 
 **Desde tu CMD o terminal favorita**
+
 ```bash
 ssh -i /ruta/a/tu/clave.pem ubuntu@IP_PÚBLICA
 ```
-- Reemplaza `IP_PÚBLICA` con la IP de tu instancia y la ruta de tu clave privada.
+Reemplaza `IP_PÚBLICA` con la IP de tu instancia y la ruta de tu clave privada.
 
-- Recibiras una advertencia de seguridad estandar de SSH verificando el acceso de una nueva identidad al servidor. confirma con (yes)
+Recibiras una advertencia de seguridad estandar de SSH verificando el acceso de una nueva identidad al servidor. confirma con (yes)
 ```bash
 The authenticity of host 'xx.xxx.xx.xxx (xx.xxx.xx.xxx)' can't be established. 
 ED25519 key fingerprint is SHA256:......... 
@@ -77,12 +82,12 @@ sudo apt update && sudo apt upgrade -y
 sudo reboot
 ```
 
-### 2.2 Crea un alias para establecer tu conexion SSH (opcional)
----
+### (WSL INSTALL) 
+A partir de aqui se recomienda utilizar WSL + @Ubuntu-24.04 
 
-### ! BONUS 
-A partir de aqui se recomienda utilizar WSL + @Ubuntu-24.04
-si no lo tienes:
+<details>
+<summary>GUIA DE INSTALACIÓN, EN CASO DE QUE NO LO TENGAS</summary>
+
 **este metodo instala Ubuntu por defecto**
 ```bash
 wsl --install
@@ -114,10 +119,11 @@ Ejecuta tu Instancia desde tu consola WSL ubuntu@
 ```bash
 ssh -i /mnt/c/Users/TU_USUARIO/X/tu-clave.pem ubuntu@IPv4_Instancia
 ```
+</details>
 
-## 3. Instalación de Privoy y Tor
+## 3. Instalación de Privoxy y Tor
 
-### Instala Privoxy (para navegación HTTP/HTTPS):
+### 3.1 Instala Privoxy (para navegación HTTP/HTTPS):
 ```bash
 sudo apt install privoxy -y
 ```
@@ -127,22 +133,24 @@ sudo apt install privoxy -y
 sudo nano /etc/privoxy/config
 ```
 
-Añade o en el lugar que prefieras del archivo /config omitiendo cualquier # al principio  
-(Revisa el arhivo completo ya que privoxy tiene configuradas listen-address 127.0.0.1:8118 by default  
-por lo que debes borrarlas o comentarlas con #)
+Añade en el lugar que prefieras del archivo /config omitiendo cualquier # al principio  
 
 ```bash
 listen-address 0.0.0.0:8118
 forward-socks5t / 127.0.0.1:9050 .
 ```
+(Revisa el arhivo completo ya que privoxy tiene configuradas listen-address 127.0.0.1:8118 by default  
+por lo que debes borrarlas o comentarlas con #)
+
 Presiona Ctrl + O → y luego Enter (para guardar)
 Luego Ctrl + X (para salir del editor).
+
 ### Reinicia Privoxy:
 
 ```bash
 sudo systemctl restart privoxy
 ```
-### Instala Tor:
+### 3.2 Instala Tor:
 
 ```bash
 sudo apt install tor -y
@@ -170,24 +178,9 @@ Guarda y cierra.
 sudo systemctl restart tor
 ```
 ---
-## BONUS
-Cambia el puerto SSH del 22 a otro 
-```bash
-sudo nano /etc/ssh/sshd_config
-```
-busca 
-```bash
-#Port 22
-## Y cambia por el que escojas
-Port 65022
-```
-- Abre el puerto en el Security Group (SG) de tu instancia
-Ir a EC2 > Seguridad > Grupos de seguridad > [Tu SG]
-
-Agregar regla de entrada:
-Tipo: TCP personalizado
-Puerto: 65022
-Origen: tu IP (x.x.x.x/32) o un rango que controles
+### Cambia el puerto :9050 por otro menos comun para Tor (opcional)
+### Crea un alias para establecer tu conexion SSH (opcional)
+---
 ## 5. Configuración en Android y PC
 
 ### En Android:
