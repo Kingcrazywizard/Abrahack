@@ -19,15 +19,14 @@
 - **Par de claves:** Crea o usa un par de claves para SSH. Descárgalo y guárdalo en un lugar seguro.
 - Haz clic en "Launch Instance".
 
-### 1.3 Security Group (firewall):
+### 1.3 Security Group (SG):
 **Los Security Groups son como firewalls por defecto a nivel de instancia.**
 
 - Reglas de Entrada:
 **Las reglas de entrada (ingress) controlan quienes (IPs) y como (Protocols & Ports) pueden conectarse a una instancia**
  
   - `(SSH) :22 (defecto)` para acceso remoto 
-  - `(SOCKS5) :9050` para Tor.
-  - `(HTTP/HTTPS) :8118` si decides usar Privoxy.
+  - `(HTTP/HTTPS) :8118` si decides usar Privoxy. (Usa otro puerto para mejorar anonimato)
 <details>
 <summary>IP_PÚBLICA/32</summary> 
 
@@ -37,6 +36,7 @@
 **Es probable que tu ISP no te proporcione una IP_PUBLICA estatica por lo que podrias:**
  - Usar un DNS Dinámico DDNS
  - Crear un VPN entre tus dispositivos y la instancia
+ - Hacer un script para actualizar automaticamente tu SG con AWS CLI
 
 </details>
 
@@ -121,9 +121,38 @@ ssh -i /mnt/c/Users/TU_USUARIO/X/tu-clave.pem ubuntu@IPv4_Instancia
 ```
 </details>
 
-## 3. Instalación de Privoxy y Tor
+## 3. Instalación de Tor y privoxy
 
-### 3.1 Instala Privoxy (para navegación HTTP/HTTPS):
+### 3.1 Instala Tor:
+
+```bash
+sudo apt install tor -y
+```
+
+### Edita el archivo de configuración de Tor:
+
+```bash
+sudo nano /etc/tor/torrc
+```
+
+Añade estas líneas al final para activar el proxy SOCKS5:
+
+```bash
+SocksPort 127.0.0.1:9050
+ControlPort 9051
+CookieAuthentication 1
+```
+Esto asegura que solo servicios locales (como Privoxy) puedan conectarse al servicio Tor.
+
+Guarda y cierra.
+
+### Reinicia Tor:
+
+```bash
+sudo systemctl restart tor
+```
+
+### 3.2 Instala Privoxy (para navegación HTTP/HTTPS):
 ```bash
 sudo apt install privoxy -y
 ```
@@ -150,44 +179,74 @@ Luego Ctrl + X (para salir del editor).
 ```bash
 sudo systemctl restart privoxy
 ```
-### 3.2 Instala Tor:
-
-```bash
-sudo apt install tor -y
-```
-
-### Edita el archivo de configuración de Tor:
-
-```bash
-sudo nano /etc/tor/torrc
-```
-
-Añade estas líneas al final para activar el proxy SOCKS5:
-
-```bash
-SocksPort 0.0.0.0:9050
-ControlPort 9051
-CookieAuthentication 1
-```
-
-Guarda y cierra.
-
-### Reinicia Tor:
-
-```bash
-sudo systemctl restart tor
-```
 ---
-### Cambia el puerto :9050 por otro menos comun para Tor (opcional)
-### Crea un alias para establecer tu conexion SSH (opcional)
+
+## 4. Comprueba la instalación:
+Verificar si el proxy está corriendo (en la instancia)
+
+```bash
+sudo systemctl status tor
+sudo systemctl status privoxy
+```
+Prueba si Privoxy enruta correctamente el tráfico a Tor (SOCKS5)
+(Usa la IP de tu EC2)
+```bash
+curl --proxy http://IP_PÚBLICA:8118 https://check.torproject.org/
+```
+```bash
+Congratulations. This browser is configured to use Tor.
+```
+
 ---
-## 5. Configuración en Android y PC
 
-### En Android:
+# FELICITACIONES!!!
 
-- Instala **Orbot** o una app como **ProxyDroid**.
-- Configura la app para usar la dirección IP de tu instancia EC2 y puerto `9050 (SOCKS5)` o `8118 (HTTP/HTTPS)`.
-- Conéctate y verifica en sitios como [https://check.torproject.org/](https://check.torproject.org/) para comprobar que estás usando Tor.
+## ERRORES EN LA INSTALACIÓN
+<details>
+<summary>REINSTALACIÓN</summary>
+
+Desinstalar Tor y Privoxy por completo
+```bash
+sudo systemctl stop tor
+sudo systemctl stop privoxy
+
+sudo apt purge --autoremove tor privoxy
+sudo rm -rf /etc/tor /var/lib/tor ~/.tor
+sudo rm -rf /etc/privoxy /var/lib/privoxy
+```
+Verifica que no queda nada escuchando en el puerto 9050 o 8118
+```bash
+sudo lsof -i :9050
+sudo lsof -i :8118
+```
+Si aún hay algo escuchando, reinicia la máquina para liberar completamente esos puertos:
+sudo reboot
+```bash
+sudo reboot
+```
+</details>
+
+---
+
+## BONUS. Crea un alias para establecer tu conexion SSH (Recomendado)
+ 
+ ### Abre tu archivo de configuración de terminal
+ ```bash
+nano ~/.bashrc
+ ```
+ ### Agrega tu linea de comando al final del archivo
+ ```bash
+alias tu-alias='ssh -i ~/ruta/a/mi-clave.pem ubuntu@xx.xx.xx.xx'
+ ```
+ ### Haz reload a la configuración
+ ```bash
+ source ~/.bashrc
+```
+**Ya puedes usar tu alias cada vez que quieras ingresar a tu instancia**
+
+---
+
+## 5. Configuración PC
 
 ### En PC:
 
@@ -200,8 +259,10 @@ sudo systemctl restart tor
 
 ## 6. Optimización y Seguridad (Opcional)
 
+### 6.1 Cambia el puerto de SSH (`22`) a otro menos común para evitar ataques.
+
 - Instala un certificado SSL con Let's Encrypt si deseas mayor seguridad.
-- Cambia el puerto de SSH (`22`) a otro menos común para evitar ataques.
+
 - Usa autenticación de clave pública para SSH en lugar de contraseñas.
 
 ---
