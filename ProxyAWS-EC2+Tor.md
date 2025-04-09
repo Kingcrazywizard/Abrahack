@@ -61,6 +61,7 @@ ssh -i /ruta/a/tu/clave.pem ubuntu@IP_PÚBLICA
 Reemplaza `IP_PÚBLICA` con la IP de tu instancia y la ruta de tu clave privada.
 
 Recibiras una advertencia de seguridad estandar de SSH verificando el acceso de una nueva identidad al servidor. confirma con (yes)
+
 ```bash
 The authenticity of host 'xx.xxx.xx.xxx (xx.xxx.xx.xxx)' can't be established. 
 ED25519 key fingerprint is SHA256:......... 
@@ -70,6 +71,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?)
 **(Puede que debas volver a validar tu acceso por SSH)**
 
 ### Actualiza el sistema:
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
@@ -89,33 +91,40 @@ A partir de aqui se recomienda utilizar WSL + @Ubuntu-24.04
 <summary>GUIA DE INSTALACIÓN, EN CASO DE QUE NO LO TENGAS</summary>
 
 **Este metodo instala Ubuntu por defecto**
+
 ```bash
 wsl --install
 ```
 Así Listas las distribuciones disponibles
+
 ```bash
 wsl --list --online
 ## Instalamos -d de nuestra preferencia
 wsl --install -d Ubuntu-24.04
 ```
 Reboot 
+
 ```bash
 shutdown.exe /r
 ```
 Lista las distribuciones disponibles
+
 ```bash
 wsl --list --online
 ```
 Establecer WSL 2 como versión por defecto:
+
 ```bash
 wsl --set-default-version 2
 ```
 Cambiá los permisos del .pem
 AWS requiere que el archivo .pem tenga permisos seguros. Ejecutá esto desde WSL:
+
 ```bash
 chmod 400 /mnt/c/Users/TuUsuario/Descargas/mi-clave.pem
 ```
 Ejecuta tu Instancia desde tu consola WSL ubuntu@
+
 ```bash
 ssh -i /mnt/c/Users/TU_USUARIO/X/tu-clave.pem ubuntu@IPv4_Instancia
 ```
@@ -157,6 +166,7 @@ sudo apt install privoxy -y
 ```
 
 ### Edita su configuración:
+
 ```bash
 sudo nano /etc/privoxy/config
 ```
@@ -189,6 +199,7 @@ sudo systemctl status privoxy
 ```
 Prueba en tu consola si Privoxy enruta correctamente el tráfico a Tor (SOCKS5)
 (Usa la IP de tu EC2)
+
 ```bash
 curl --proxy http://IP_PÚBLICA:8118 https://check.torproject.org/
 ```
@@ -203,6 +214,7 @@ Congratulations. This browser is configured to use Tor.
 <summary>REINSTALACIÓN</summary>
 
 Desinstalar Tor y Privoxy por completo
+
 ```bash
 sudo systemctl stop tor
 sudo systemctl stop privoxy
@@ -212,12 +224,14 @@ sudo rm -rf /etc/tor /var/lib/tor ~/.tor
 sudo rm -rf /etc/privoxy /var/lib/privoxy
 ```
 Verifica que no queda nada escuchando en el puerto 9050 o 8118
+
 ```bash
 sudo lsof -i :9050
 sudo lsof -i :8118
 ```
 Si aún hay algo escuchando, reinicia la máquina para liberar completamente esos puertos:
 sudo reboot
+
 ```bash
 sudo reboot
 ```
@@ -230,34 +244,20 @@ sudo reboot
 **CONFIGURAREMOS NUEVAS INTEGRACIONES PARA APROVECHAR EL MAYOR POTENCIAL DE NUESTRO SERVIDOR**
 **...PERO ANTES ALGUNOS CONSEJOS ADICIONALES:**
 
-## 7. Crea un alias para establecer tu conexion SSH 
- 
- ### Abre tu archivo de configuración de terminal
- ```bash
-nano ~/.bashrc
- ```
- ### Agrega tu linea de comando al final del archivo
- ```bash
-alias tu-alias='ssh -i ~/ruta/a/mi-clave.pem ubuntu@xx.xx.xx.xx'
- ```
- ### Haz reload a la configuración
- ```bash
- source ~/.bashrc
-```
-**Ya puedes usar tu alias cada vez que quieras ingresar a tu instancia**
-
 ---
 
-## 8. Mejora tu seguridad 
+## 7. Mejora tu seguridad 
 
 <details>
 <summary>Cambia el puerto de (SSH) :22</summary>
 
 Edita el archivo de configuración de SSH
+
 ```bash
 sudo nano /etc/ssh/sshd_config
 ```
 Agregá/modificá estas líneas con el puerto de tu preferencia:
+
 ```bash
 Port 4422
 PermitRootLogin prohibit-password
@@ -265,18 +265,22 @@ PasswordAuthentication no
 ```
 Manten el puerto 22 habilitado mientras haces pruebas
 Revisa la sintaxis del archivo 
+
 ```bash
 sudo sshd -t
 ```
 Reiniciá el servicio SSH
+
 ```bash
 sudo systemctl restart ssh
 ```
 Verifica si el puerto esta escuchando
+
 ```bash
 sudo ss -tuln | grep 4422
 ```
 Deberias ver esto
+
 ```bash
 LISTEN 0 128 0.0.0.0:4422 0.0.0.0:*
 ```
@@ -284,11 +288,13 @@ LISTEN 0 128 0.0.0.0:4422 0.0.0.0:*
 - `(TCP) :4422 IP_PÚBLICA` 
 
 Si no ha habido algún error, vuelve a ejecutar tu instancia desde tu consola de comandos usando el nuevo puerto
+
 ```bash
 ssh -i /ruta/a/tu/archivo.pem -p 4422 usuario@ip-publica
 ```
 Si no funciona puede que el directorio donde el servicio SSH guarda su PID o hace operaciones temporales no exista, 
 entonces debamos crearlo
+
 ```bash
 sudo mkdir -p /run/sshd
 sudo chown root:sys /run/sshd
@@ -307,16 +313,19 @@ Privoxy no tiene permisos para puertos menores a 1024, necesitaria ejecutarse co
 O solo escoge uno mas alto.
 
 Verifica que no haya ningún servicio en el puerto de tu elección
+
 ```bash
 sudo ss -tuln | grep :443
 ```
 
 Edita el archivo de configuración de Privoxy y cambia el puerto de escucha
+
 ```bash
 listen-address  0.0.0.0:xxxx
 ```
 
 Reinicia el servicio
+
 ```bash
 sudo systemctl restart privoxy
 ```
@@ -325,6 +334,28 @@ Crea la nueva regla en tu SG y elimina la anterior.
 Verifica que tu trafico HTTP/HTTPS sea redirigido por Tor
 
 </details>
+
+## 8. Simplifica tu conexión por SSH 
+
+<details>
+<summary>Crea un alias</summary>
+
+Abre tu archivo de configuración de terminal
+
+ ```bash
+nano ~/.bashrc
+ ```
+Agrega tu linea de comando al final del archivo
+
+ ```bash
+alias tu-alias='ssh -i ~/ruta/a/mi-clave.pem ubuntu@xx.xx.xx.xx'
+ ```
+Haz reload a la configuración
+
+ ```bash
+ source ~/.bashrc
+```
+**Ya puedes usar tu alias cada vez que quieras ingresar a tu instancia**
 
 - Instala un certificado SSL con Let's Encrypt si deseas mayor seguridad.
 
