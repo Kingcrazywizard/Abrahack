@@ -1,6 +1,55 @@
 # AWS (EC2) AMIs MANAGEMENT
 
 ## 🧰 Instalación AWS CLI
+
+1. Instala AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+2. Configura tus credenciales:
+   ```bash
+   aws configure
+   ```
+   Ingresá tu `Access Key`, `Secret Key`, `región`, y formato de salida (`json` recomendado).
+
+<details>
+
+### <summary>¿Dónde consigo mi Access Key y Secret Key?</summary>
+
+1. Si nunca creaste un usuario, accedé a: https://console.aws.amazon.com/iam
+2. En el panel lateral izquierdo, seleccioná **Personas**  haz clic en **Crear persona**.
+3. Ingresá un nombre de usuario (por ejemplo: `mi-usuario-cli`).
+4. Marcá la opción **Acceso mediante la Consola de administración de AWS** y **Quiero crea un usuario IAM**.
+5. Se te pedirá crear una contraseña para el usuario (puedes permitir que la defina AWS o configurarla manualmente).
+6. Elige un método de permisos:
+   - Para control total, seleccioná **Adjuntar políticas existentes directamente** y agregá `AdministratorAccess`, o bien
+   - Crear una política personalizada con permisos mínimos (recomendado si se trata de un entorno productivo).
+7. Avanza y finaliza la creación del usuario.
+8. Luego de crearlo, accedé al usuario desde la lista y entrá a la pestaña **Credenciales de seguridad**.
+9. Hacé clic en **Crear clave de acceso**.
+10. Se generarán:
+    - `Access Key ID`: (ej. AKIA...)
+    - `Secret Access Key`: solo se muestra una vez, guardalo seguro.
+</details>
+
+<details>
+
+### <summary>Uso de MFA con AWS CLI</summary>
+
+Por defecto, la AWS CLI no solicita autenticación multifactor (MFA), pero puedes implementarla para mayor seguridad usando credenciales temporales. Esto requiere que tengas MFA activado en tu usuario IAM.
+
+1. Verifica que tu usuario tenga activado el dispositivo MFA en IAM.
+
+2. Obten un código MFA desde tu aplicación (Google Authenticator, Authy, etc.).
+
+Ejecutá el siguiente comando para obtener credenciales temporales:
+
+```bash
+aws sts get-session-token \
+  --serial-number arn:aws:iam::123456789012:mfa/tu-usuario \
+  --token-code 123456
+  ```
+  Esto te devolverá:
+ `AccessKeyId`, `SecretAccessKey` y `SessionToken`
+</details>
+
 1. Instala AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 2. Configura tus credenciales:
    ```bash
