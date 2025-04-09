@@ -82,13 +82,13 @@ sudo apt update && sudo apt upgrade -y
 sudo reboot
 ```
 
-### (WSL INSTALL) 
+## (WSL INSTALL) 
 A partir de aqui se recomienda utilizar WSL + @Ubuntu-24.04 
 
 <details>
 <summary>GUIA DE INSTALACIÓN, EN CASO DE QUE NO LO TENGAS</summary>
 
-**este metodo instala Ubuntu por defecto**
+**Este metodo instala Ubuntu por defecto**
 ```bash
 wsl --install
 ```
@@ -198,7 +198,7 @@ Congratulations. This browser is configured to use Tor.
 
 ---
 
-## ERRORES EN LA INSTALACIÓN?
+## 6. Errores en la instalación?
 <details>
 <summary>REINSTALACIÓN</summary>
 
@@ -230,7 +230,7 @@ sudo reboot
 **CONFIGURAREMOS NUEVAS INTEGRACIONES PARA APROVECHAR EL MAYOR POTENCIAL DE NUESTRO SERVIDOR**
 **...PERO ANTES ALGUNOS CONSEJOS ADICIONALES:**
 
-## Crea un alias para establecer tu conexion SSH 
+## 7. Crea un alias para establecer tu conexion SSH 
  
  ### Abre tu archivo de configuración de terminal
  ```bash
@@ -248,11 +248,10 @@ alias tu-alias='ssh -i ~/ruta/a/mi-clave.pem ubuntu@xx.xx.xx.xx'
 
 ---
 
-## Mejora tu seguridad 
+## 8. Mejora tu seguridad 
 
 <details>
-
-### <summary>Cambia el puerto de `(SSH) :22`</summary>
+<summary>Cambia el puerto de (SSH) :22</summary>
 
 Edita el archivo de configuración de SSH
 ```bash
@@ -284,7 +283,7 @@ LISTEN 0 128 0.0.0.0:4422 0.0.0.0:*
 **Cambia la el ingress del SG (no elimines el puerto 22 hasta lograr acceder por tu nuevo puerto)**
 - `(TCP) :4422 IP_PÚBLICA` 
 
-Si no ha habido algun error, vuelve a ejecutar tu instancia desde tu consola de comandos usando el nuevo puerto
+Si no ha habido algún error, vuelve a ejecutar tu instancia desde tu consola de comandos usando el nuevo puerto
 ```bash
 ssh -i /ruta/a/tu/archivo.pem -p 4422 usuario@ip-publica
 ```
@@ -296,10 +295,13 @@ sudo chown root:sys /run/sshd
 sudo chmod 755 /run/sshd
 ```
 Revisa la sintaxis del archivo, verifica si el puerto escucha, reinicia el servicio SSH y prueba ejecutar la instancia de nuevo.
-Si se a ejecutado sin problemas asume el riesgo y elimina el tu puerto `(SSH :22)` de tu SG
-No olvides cambiar tu alias con la nueva linea SSH
+Si se ha ejecutado sin problemas asume el riesgo y elimina la antigua regla `(SSH :22)` de tu SG
+No olvides cambiar tu alias para ingresasr vía SSH por el nuevo puerto.
 
-### <summary>Cambia el puerto de `(HTTP/HTTPS) :8118`</summary>
+</details>
+
+<details>
+<summary>Cambia el puerto de (HTTP/HTTPS) :8118</summary>
 
 Privoxy no tiene permisos para puertos menores a 1024, necesitaria ejecutarse como root 
 O solo escoge uno mas alto.
@@ -333,4 +335,3 @@ Verifica que tu trafico HTTP/HTTPS sea redirigido por Tor
 ## 7. Costos Estimados
 
 Si te mantienes en el nivel gratuito con `t2.micro` y usas menos de `1GB` de salida al mes, debería ser gratuito. Si superas eso, el costo será bajo, unos `$5` al mes aproximadamente.
-
