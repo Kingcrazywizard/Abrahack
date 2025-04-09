@@ -1,5 +1,5 @@
-# Guía: Proxy en AWS EC2 + Tor 
-## Configura un proxy en la nube con el servicio EC2 de Amazon Cloud (AWS) y ciframiento mediante TOR, de manera profesional, escalable y GRATUITA!! 
+# GUÍA: PROXY EN AWS EC2 + TOR
+**Configura un proxy en la nube con el servicio EC2 de Amazon Cloud (AWS) y ciframiento mediante TOR, de manera profesional, escalable y GRATUITA!!**
 
 
 ## 1. Creación de la Instancia EC2 en AWS
@@ -25,8 +25,8 @@
 - Reglas de Entrada:
 **Las reglas de entrada (ingress) controlan quienes (IPs) y como (Protocols & Ports) pueden conectarse a una instancia**
  
-  - `(SSH) :22 (defecto)` para acceso remoto 
-  - `(HTTP/HTTPS) :8118` si decides usar Privoxy. (Usa otro puerto para mejorar anonimato)
+  - `(SSH) :22 (defecto) IP_PÚBLICA/32` para acceso remoto 
+  - `(TCP) :8118 IP_PÚBLICA/32` para HTTP/HTTPS para Privoxy.
 <details>
 <summary>IP_PÚBLICA/32</summary> 
 
@@ -121,9 +121,7 @@ ssh -i /mnt/c/Users/TU_USUARIO/X/tu-clave.pem ubuntu@IPv4_Instancia
 ```
 </details>
 
-## 3. Instalación de Tor y privoxy
-
-### 3.1 Instala Tor:
+## 3. Instalación de Tor 
 
 ```bash
 sudo apt install tor -y
@@ -152,7 +150,8 @@ Guarda y cierra.
 sudo systemctl restart tor
 ```
 
-### 3.2 Instala Privoxy (para navegación HTTP/HTTPS):
+## 4. Instala Privoxy (para navegación HTTP/HTTPS):
+
 ```bash
 sudo apt install privoxy -y
 ```
@@ -181,14 +180,14 @@ sudo systemctl restart privoxy
 ```
 ---
 
-## 4. Comprueba la instalación:
+## 5. Comprueba la instalación:
 Verificar si el proxy está corriendo (en la instancia)
 
 ```bash
 sudo systemctl status tor
 sudo systemctl status privoxy
 ```
-Prueba si Privoxy enruta correctamente el tráfico a Tor (SOCKS5)
+Prueba en tu consola si Privoxy enruta correctamente el tráfico a Tor (SOCKS5)
 (Usa la IP de tu EC2)
 ```bash
 curl --proxy http://IP_PÚBLICA:8118 https://check.torproject.org/
@@ -199,9 +198,7 @@ Congratulations. This browser is configured to use Tor.
 
 ---
 
-# FELICITACIONES!!!
-
-## ERRORES EN LA INSTALACIÓN
+## ERRORES EN LA INSTALACIÓN?
 <details>
 <summary>REINSTALACIÓN</summary>
 
@@ -228,7 +225,12 @@ sudo reboot
 
 ---
 
-## BONUS. Crea un alias para establecer tu conexion SSH (Recomendado)
+## FELICITACIONES!!!
+**AHORA CUENTAS CON UN RECURSO DE GRAN PODER PARA PROTEGER TU ANONIMATO Y PRIVACIDAD!! Y ESTE ES SOLO EL COMIENZO!!**
+**CONFIGURAREMOS NUEVAS INTEGRACIONES PARA APROVECHAR EL MAYOR POTENCIAL DE NUESTRO SERVIDOR**
+**...PERO ANTES ALGUNOS CONSEJOS ADICIONALES:**
+
+## Crea un alias para establecer tu conexion SSH 
  
  ### Abre tu archivo de configuración de terminal
  ```bash
@@ -246,20 +248,81 @@ alias tu-alias='ssh -i ~/ruta/a/mi-clave.pem ubuntu@xx.xx.xx.xx'
 
 ---
 
-## 5. Configuración PC
+## Mejora tu seguridad 
 
-### En PC:
+<details>
 
-- Configura tu navegador o sistema para usar un proxy SOCKS5:
-  - **Dirección:** `IP_PÚBLICA`
-  - **Puerto:** `9050`
-- Puedes usar extensiones de navegador como **FoxyProxy** para gestionar tus conexiones.
+### <summary>Cambia el puerto de `(SSH) :22`</summary>
 
----
+Edita el archivo de configuración de SSH
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+Agregá/modificá estas líneas con el puerto de tu preferencia:
+```bash
+Port 4422
+PermitRootLogin prohibit-password
+PasswordAuthentication no
+```
+Manten el puerto 22 habilitado mientras haces pruebas
+Revisa la sintaxis del archivo 
+```bash
+sudo sshd -t
+```
+Reiniciá el servicio SSH
+```bash
+sudo systemctl restart ssh
+```
+Verifica si el puerto esta escuchando
+```bash
+sudo ss -tuln | grep 4422
+```
+Deberias ver esto
+```bash
+LISTEN 0 128 0.0.0.0:4422 0.0.0.0:*
+```
+**Cambia la el ingress del SG (no elimines el puerto 22 hasta lograr acceder por tu nuevo puerto)**
+- `(TCP) :4422 IP_PÚBLICA` 
 
-## 6. Optimización y Seguridad (Opcional)
+Si no ha habido algun error, vuelve a ejecutar tu instancia desde tu consola de comandos usando el nuevo puerto
+```bash
+ssh -i /ruta/a/tu/archivo.pem -p 4422 usuario@ip-publica
+```
+Si no funciona puede que el directorio donde el servicio SSH guarda su PID o hace operaciones temporales no exista, 
+entonces debamos crearlo
+```bash
+sudo mkdir -p /run/sshd
+sudo chown root:sys /run/sshd
+sudo chmod 755 /run/sshd
+```
+Revisa la sintaxis del archivo, verifica si el puerto escucha, reinicia el servicio SSH y prueba ejecutar la instancia de nuevo.
+Si se a ejecutado sin problemas asume el riesgo y elimina el tu puerto `(SSH :22)` de tu SG
+No olvides cambiar tu alias con la nueva linea SSH
 
-### 6.1 Cambia el puerto de SSH (`22`) a otro menos común para evitar ataques.
+### <summary>Cambia el puerto de `(HTTP/HTTPS) :8118`</summary>
+
+Privoxy no tiene permisos para puertos menores a 1024, necesitaria ejecutarse como root 
+O solo escoge uno mas alto.
+
+Verifica que no haya ningún servicio en el puerto de tu elección
+```bash
+sudo ss -tuln | grep :443
+```
+
+Edita el archivo de configuración de Privoxy y cambia el puerto de escucha
+```bash
+listen-address  0.0.0.0:xxxx
+```
+
+Reinicia el servicio
+```bash
+sudo systemctl restart privoxy
+```
+Realiza pruebas de status en tus servicios
+Crea la nueva regla en tu SG y elimina la anterior.
+Verifica que tu trafico HTTP/HTTPS sea redirigido por Tor
+
+</details>
 
 - Instala un certificado SSL con Let's Encrypt si deseas mayor seguridad.
 
