@@ -5,14 +5,6 @@
 
 Construir un contenedor de laboratorio completamente funcional para ejecutar **OpenClaw** dentro de la infraestructura de **Abrahack**, utilizando **Podman** y un entorno Debian aislado.
 
-Este documento describe:
-
-- Creación del contenedor
-- Resolución de errores de `apt` en entornos rootless
-- Instalación de dependencias base
-- Preparación del entorno para instalar OpenClaw
-- Base para construir posteriormente una **imagen reutilizable de laboratorio**
-
 ------------------------------------------------------------------------
 
 # 1. ARQUITECTURA DEL LABORATORIO
@@ -131,13 +123,13 @@ OpenClaw utiliza NodeJS.
 Instalar repositorio oficial:
 
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 ```
 
 Instalar Node:
 
 ```bash
-apt install -y nodejs
+apt install -y nodejs 
 ```
 
 Verificar instalación:
@@ -158,95 +150,53 @@ mkdir /lab
 cd /lab
 ```
 
-Estructura sugerida:
-
-Carpeta | Función
---------|--------
-openclaw | código fuente
-logs | registros del sistema
-tools | herramientas auxiliares
-tmp | ejecuciones temporales
-
-Ejemplo:
-
-```bash
-mkdir openclaw logs tools tmp
-```
-
 ------------------------------------------------------------------------
 
 # 9. PREPARACIÓN PARA INSTALAR OPENCLAW
 
-Clonar el repositorio:
-
 ```bash
-git clone <repositorio-openclaw>
+git clone https://github.com/openclaw/openclaw.git
 cd openclaw
+
+pnpm install
+pnpm ui:build # auto-installs UI deps on first run
+pnpm build
+
 ```
 
-Instalar dependencias:
 
-```bash
-npm install
-```
-
-Ejecutar el servicio:
-
-```bash
-npm start
-```
+# Dev loop (auto-reload on TS changes)
+pnpm gateway:watch
 
 ------------------------------------------------------------------------
 
-# 10. VERIFICACIÓN DEL ENTORNO
 
-Confirmar que el laboratorio tiene:
-
-✔ Debian funcionando  
-✔ apt operativo  
-✔ NodeJS instalado  
-✔ herramientas base disponibles  
-✔ estructura de laboratorio creada
-
-Si todo está correcto el contenedor ya está listo para ejecutar OpenClaw.
-
-------------------------------------------------------------------------
-
-# 11. SIGUIENTE FASE (IMAGEN DE LABORATORIO)
+# 10. IMAGEN DE LABORATORIO
 
 Una vez validado el entorno se creará una **imagen base reutilizable**.
 
-Flujo futuro:
-
-Host
-↓
-Podman Image → `abrahack-openclaw-lab`
-↓
-Instancias de laboratorio
-↓
-Usuarios de la plataforma
-
-Esto permitirá lanzar laboratorios con:
-
 ```bash
-podman run abrahack-openclaw-lab
+podman commit openclaw abrahack/openclaw-lab
 ```
 
-Ventajas:
+Podrás lanzar nuevos labs con
 
-- despliegue instantáneo
-- consistencia del entorno
-- escalabilidad para múltiples estudiantes
+```bash
+podman run -it abrahack/openclaw-lab
+```
 
-------------------------------------------------------------------------
+# 11. Instala el CLI globalmente
 
-# ESTADO ACTUAL
+```bash
+npm install -g .
+```
+Podras ejecutar OpenClaw sin pnpm
 
-ENTORNO LISTO PARA INSTALAR OPENCLAW
 
-Contenedor funcional
-APT corregido
-Dependencias instaladas
-Base preparada para construir imagen reutilizable
+# 12. PROXIMA FASE 
 
-------------------------------------------------------------------------
+Configuración inicial de OpenClaw con 
+
+```bash
+pnpm openclaw onboard --install-daemon
+```
