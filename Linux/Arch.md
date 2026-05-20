@@ -384,158 +384,120 @@ nano ~/.config/hypr/hyprland.conf
 ### 6.4 Configuración Base Completa (hyprland.conf)
 
 ```ini
-# ============================================================
-#  ABRAHACK OS — Hyprland Config Base
-# ============================================================
-
-# --- Variables de entorno (NVIDIA + Wayland) ---
-env = LIBVA_DRIVER_NAME,nvidia
-env = XDG_SESSION_TYPE,wayland
-env = GBM_BACKEND,nvidia-drm
-env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-env = WLR_NO_HARDWARE_CURSORS,1
-env = XCURSOR_SIZE,24
-env = QT_QPA_PLATFORM,wayland
-env = GDK_BACKEND,wayland
-
-# --- Monitor ---
-# Formato: monitor=nombre,resolución,posición,escala
-monitor=,preferred,auto,1
-
-# --- Input ---
-input {
-    kb_layout = us
-    follow_mouse = 1
-    touchpad {
-        natural_scroll = no
-    }
-}
-
-# --- Apariencia general ---
-general {
-    gaps_in = 5
-    gaps_out = 10
-    border_size = 2
-    col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
-    col.inactive_border = rgba(595959aa)
-    layout = dwindle
-}
-
-# --- Decoraciones ---
-decoration {
-    rounding = 8
-    blur {
-        enabled = true
-        size = 3
-        passes = 1
-    }
-    drop_shadow = yes
-    shadow_range = 4
-    shadow_render_power = 3
-    col.shadow = rgba(1a1a1aee)
-}
-
-# --- Animaciones ---
-animations {
-    enabled = yes
-    bezier = myBezier, 0.05, 0.9, 0.1, 1.05
-    animation = windows, 1, 7, myBezier
-    animation = windowsOut, 1, 7, default, popin 80%
-    animation = border, 1, 10, default
-    animation = fade, 1, 7, default
-    animation = workspaces, 1, 6, default
-}
-
-# --- Layout ---
-dwindle {
-    pseudotile = yes
-    preserve_split = yes
-}
-
-# --- Autostart ---
-exec-once = waybar
-exec-once = dunst
-exec-once = hyprpaper
-exec-once = /usr/lib/polkit-kde-authentication-agent-1
-
-# ============================================================
-#  ATAJOS DE TECLADO
-# ============================================================
-
-$mainMod = SUPER
-
-# Aplicaciones principales
-bind = $mainMod, RETURN, exec, kitty
-bind = $mainMod, D, exec, rofi -show drun
-bind = $mainMod, Q, killactive
-bind = $mainMod, F, fullscreen
-bind = $mainMod, V, togglefloating
-bind = $mainMod, P, pseudo
-bind = $mainMod, J, togglesplit
-
-# Movimiento de foco entre ventanas
-bind = $mainMod, left, movefocus, l
-bind = $mainMod, right, movefocus, r
-bind = $mainMod, up, movefocus, u
-bind = $mainMod, down, movefocus, d
-
-# Mover ventanas dentro del tiling
-bind = $mainMod SHIFT, left, movewindow, l
-bind = $mainMod SHIFT, right, movewindow, r
-bind = $mainMod SHIFT, up, movewindow, u
-bind = $mainMod SHIFT, down, movewindow, d
-
-# Redimensionar ventanas (modo resize)
-bind = $mainMod, R, submap, resize
-submap = resize
-binde = , right, resizeactive, 30 0
-binde = , left, resizeactive, -30 0
-binde = , up, resizeactive, 0 -30
-binde = , down, resizeactive, 0 30
-bind = , escape, submap, reset
-submap = reset
-
-# ============================================================
-#  WORKSPACES — CAMBIO Y MOVIMIENTO (CORRECCIÓN)
-# ============================================================
-# El problema anterior: las teclas numéricas pueden necesitar
-# el nombre exacto según tu layout de teclado.
-# Esta sintaxis es la más compatible:
-
-bind = $mainMod, 1, workspace, 1
-bind = $mainMod, 2, workspace, 2
-bind = $mainMod, 3, workspace, 3
-bind = $mainMod, 4, workspace, 4
-bind = $mainMod, 5, workspace, 5
-bind = $mainMod, 6, workspace, 6
-bind = $mainMod, 7, workspace, 7
-bind = $mainMod, 8, workspace, 8
-bind = $mainMod, 9, workspace, 9
-bind = $mainMod, 0, workspace, 10
-
-# Mover ventana activa a workspace
-bind = $mainMod SHIFT, 1, movetoworkspace, 1
-bind = $mainMod SHIFT, 2, movetoworkspace, 2
-bind = $mainMod SHIFT, 3, movetoworkspace, 3
-bind = $mainMod SHIFT, 4, movetoworkspace, 4
-bind = $mainMod SHIFT, 5, movetoworkspace, 5
-bind = $mainMod SHIFT, 6, movetoworkspace, 6
-bind = $mainMod SHIFT, 7, movetoworkspace, 7
-bind = $mainMod SHIFT, 8, movetoworkspace, 8
-bind = $mainMod SHIFT, 9, movetoworkspace, 9
-bind = $mainMod SHIFT, 0, movetoworkspace, 10
-
-# Scroll sobre la barra para cambiar workspace
-bind = $mainMod, mouse_down, workspace, e+1
-bind = $mainMod, mouse_up, workspace, e-1
-
-# Mover/redimensionar ventanas con mouse
-bindm = $mainMod, mouse:272, movewindow
-bindm = $mainMod, mouse:273, resizewindow
-
-# Screenshots
-bind = , Print, exec, grim ~/Pictures/screenshot-$(date +%F-%T).png
-bind = SHIFT, Print, exec, grim -g "$(slurp)" ~/Pictures/screenshot-$(date +%F-%T).png
+ # --- Monitor ---
+   2 │ # Formato: monitor=nombre,resolución,posición,escala
+   3 │ monitor=,preferred,auto,1
+   4 │
+   5 │ # --- Input ---
+   6 │ input {
+   7 │     kb_layout = us
+   8 │     follow_mouse = 1
+   9 │     touchpad {
+  10 │         natural_scroll = no
+  11 │     }
+  12 │ }
+  13 │
+  14 │ # --- Apariencia general ---
+  15 │ general {
+  16 │     gaps_in = 5
+  17 │     gaps_out = 10
+  18 │     border_size = 2
+  19 │     col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
+  20 │     col.inactive_border = rgba(595959aa)
+  21 │     layout = dwindle
+  22 │ }
+  23 │
+  24 │ # --- Autostart ---
+  25 │ exec-once = waybar
+  26 │ exec-once = dunst
+  27 │ exec-once = hyprpaper
+  28 │ exec-once = /usr/lib/polkit-kde-authentication-agent-1
+  29 │
+  30 │ # =========================================================
+     │ ===
+  31 │ #  ATAJOS DE TECLADO
+  32 │ # =========================================================
+     │ ===
+  33 │
+  34 │ $mainMod = SUPER
+  35 │
+  36 │ # Aplicaciones principales
+  37 │ bind = $mainMod, RETURN, exec, kitty
+  38 │ bind = $mainMod, D, exec, rofi -show drun
+  39 │ bind = $mainMod, Q, killactive
+  40 │ bind = $mainMod, F, fullscreen
+  41 │ bind = $mainMod, V, togglefloating
+  42 │ bind = $mainMod, P, pseudo
+  43 │
+  44 │
+  45 │ # Movimiento de foco entre ventanas
+  46 │ bind = $mainMod, left, movefocus, l
+  47 │ bind = $mainMod, right, movefocus, r
+  48 │ bind = $mainMod, up, movefocus, u
+  49 │ bind = $mainMod, down, movefocus, d
+  50 │
+  51 │ # Mover ventanas dentro del tiling
+  52 │ bind = $mainMod SHIFT, left, movewindow, l
+  53 │ bind = $mainMod SHIFT, right, movewindow, r
+  54 │ bind = $mainMod SHIFT, up, movewindow, u
+  55 │ bind = $mainMod SHIFT, down, movewindow, d
+  56 │
+  57 │ # Redimensionar ventanas (modo resize)
+  58 │ bind = $mainMod, R, submap, resize
+  59 │ submap = resize
+  60 │ binde = , right, resizeactive, 30 0
+  61 │ binde = , left, resizeactive, -30 0
+  62 │ binde = , up, resizeactive, 0 -30
+  63 │ binde = , down, resizeactive, 0 30
+  64 │ bind = , escape, submap, reset
+  65 │ submap = reset
+  66 │
+  67 │ # =========================================================
+     │ ===
+  68 │ #  WORKSPACES — CAMBIO Y MOVIMIENTO (CORRECCIÓN)
+  69 │ # =========================================================
+     │ ===
+  70 │ # El problema anterior: las teclas numéricas pueden necesit
+     │ ar
+  71 │ # el nombre exacto según tu layout de teclado.
+  72 │ # Esta sintaxis es la más compatible:
+  73 │
+  74 │ bind = $mainMod, 1, workspace, 1
+  75 │ bind = $mainMod, 2, workspace, 2
+  76 │ bind = $mainMod, 3, workspace, 3
+  77 │ bind = $mainMod, 4, workspace, 4
+  78 │ bind = $mainMod, 5, workspace, 5
+  79 │ bind = $mainMod, 6, workspace, 6
+  80 │ bind = $mainMod, 7, workspace, 7
+  81 │ bind = $mainMod, 8, workspace, 8
+  82 │ bind = $mainMod, 9, workspace, 9
+  83 │ bind = $mainMod, 0, workspace, 10
+  84 │
+  85 │ # Mover ventana activa a workspace
+  86 │ bind = $mainMod SHIFT, 1, movetoworkspace, 1
+  87 │ bind = $mainMod SHIFT, 2, movetoworkspace, 2
+  88 │ bind = $mainMod SHIFT, 3, movetoworkspace, 3
+  89 │ bind = $mainMod SHIFT, 4, movetoworkspace, 4
+  90 │ bind = $mainMod SHIFT, 5, movetoworkspace, 5
+  91 │ bind = $mainMod SHIFT, 6, movetoworkspace, 6
+  92 │ bind = $mainMod SHIFT, 7, movetoworkspace, 7
+  93 │ bind = $mainMod SHIFT, 8, movetoworkspace, 8
+  94 │ bind = $mainMod SHIFT, 9, movetoworkspace, 9
+  95 │ bind = $mainMod SHIFT, 0, movetoworkspace, 10
+  96 │
+  97 │ # Scroll sobre la barra para cambiar workspace
+  98 │ bind = $mainMod, mouse_down, workspace, e+1
+  99 │ bind = $mainMod, mouse_up, workspace, e-1
+ 100 │
+ 101 │ # Mover/redimensionar ventanas con mouse
+ 102 │ bindm = $mainMod, mouse:272, movewindow
+ 103 │ bindm = $mainMod, mouse:273, resizewindow
+ 104 │
+ 105 │ # Screenshots
+ 106 │ bind = , Print, exec, grim ~/Pictures/screenshot-$(date +%F
+     │ -%T).png
+ 107 │ bind = SHIFT, Print, exec, grim -g "$(slurp)" ~/Pictures/sc
+     │ reenshot-$(date +%F-%T).png
 ```
 
 > **Diagnóstico del problema de workspaces:** Si los keybinds de números no funcionan, el problema más común es un conflicto con el layout de teclado. Si tienes `kb_layout = latam` o `es`, las teclas numéricas tienen nombres distintos internamente. Con `kb_layout = us` los binds de arriba funcionan sin modificación.
