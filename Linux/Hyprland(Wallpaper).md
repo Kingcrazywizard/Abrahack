@@ -1,21 +1,37 @@
-OBJETIVO editar
+# Hyprland — Gestión de Wallpaper
 
-Que puedas cambiar wallpaper así:
+## Script `setwall` · Persistente · Multi-monitor · Hacker Workflow
 
+---
+
+## Objetivo
+
+Cambiar el wallpaper con un solo comando:
+
+```bash
 setwall cyberpunk.png
+```
 
-y:
+Con las siguientes garantías:
 
-cambie instantáneamente
-sobreviva reboot
-sobreviva reload
-multi monitor
-sin editar configs manualmente
+- Cambia instantáneamente
+- Sobrevive reboot
+- Sobrevive reload de Hyprland
+- Funciona en multi-monitor
+- Sin editar configs manualmente
 
-PASO 1 — Crear script profesional
+---
+
+## PASO 1 — Crear el Script Principal
+
+```bash
 mkdir -p ~/.local/bin
 nano ~/.local/bin/setwall
-Pega EXACTAMENTE esto
+```
+
+Pega el siguiente contenido:
+
+```bash
 #!/bin/bash
 
 WALL="$1"
@@ -44,27 +60,51 @@ hyprctl hyprpaper wallpaper "DP-2,$WALLPATH"
 echo "$WALLPATH" > ~/.cache/current_wallpaper
 
 echo "Wallpaper aplicado: $WALL"
-Guardar
-CTRL + O
-ENTER
-CTRL + X
-PASO 2 — Dar permisos
+```
+
+Guarda con `Ctrl+O` → `Enter` → `Ctrl+X`
+
+---
+
+## PASO 2 — Dar Permisos al Script
+
+```bash
 chmod +x ~/.local/bin/setwall
-PASO 3 — Añadir al PATH
+```
 
-Abre:
+---
 
+## PASO 3 — Añadir al PATH
+
+```bash
 nano ~/.zshrc
-Agrega al final
+```
+
+Agrega al final:
+
+```bash
 export PATH="$HOME/.local/bin:$PATH"
-Aplicar:
+```
+
+Aplica los cambios:
+
+```bash
 source ~/.zshrc
-PASO 4 — Crear restauración automática
+```
 
-Ahora:
+---
 
+## PASO 4 — Crear Script de Restauración Automática
+
+Este script restaura el último wallpaper usado al iniciar Hyprland:
+
+```bash
 nano ~/.local/bin/wallrestore
-Pega esto
+```
+
+Pega el siguiente contenido:
+
+```bash
 #!/bin/bash
 
 sleep 3
@@ -83,57 +123,81 @@ sleep 2
 
 hyprctl hyprpaper wallpaper "HDMI-A-1,$WALL"
 hyprctl hyprpaper wallpaper "DP-2,$WALL"
-Guardar
-CTRL + O
-ENTER
-CTRL + X
-Permisos
+```
+
+Guarda con `Ctrl+O` → `Enter` → `Ctrl+X`
+
+Permisos:
+
+```bash
 chmod +x ~/.local/bin/wallrestore
-PASO 5 — Hyprland autostart LIMPIO
+```
 
-Abre:
+---
 
+## PASO 5 — Configurar Autostart en Hyprland
+
+```bash
 nano ~/.config/hypr/hyprland.conf
-ELIMINA:
+```
+
+**Elimina** esta línea si existe:
+
+```ini
 exec-once = hyprpaper
-Y agrega:
+```
+
+**Agrega** esta en su lugar:
+
+```ini
 exec-once = /home/kingwizard/.local/bin/wallrestore
+```
 
-PASO 6 — Guardar permisos
-chmod +x ~/.local/bin/wallrestore
+---
 
-PASO 7 — TEST MANUAL
+## PASO 6 — Uso
 
-SIN reboot todavía:
-RESULTADO FINAL
+Coloca tus wallpapers en:
 
-Ahora:
+```bash
+~/Pictures/Wallpapers/
+```
 
-cambiar wallpaper:
-setwall wallpaper.png
-reboot/login:
+Cambia el wallpaper con:
 
-se restaura automáticamente.
+```bash
+setwall nombre-imagen.png
+```
 
-VENTAJAS
+Al hacer reboot o reload, se restaura automáticamente el último wallpaper usado.
 
-✅ persistente
-✅ limpio
-✅ modular
-✅ multi monitor
-✅ hacker workflow
-✅ sin configs rotas
-✅ fácil scripting
-✅ extensible
+---
 
-Más adelante podrás hacer:
-setwall random
+## Ventajas
 
-o:
+|Característica|Estado|
+|:--|:--|
+|Persistente entre reinicios|✅|
+|Limpio, sin configs rotas|✅|
+|Modular y extensible|✅|
+|Multi-monitor|✅|
+|Hacker workflow|✅|
+|Fácil de scripting|✅|
 
-wallpapers rotativos
-wallpapers IA
-wallpapers dinámicos
-wallpapers por workspace
-wallpapers reactivos a CPU/GPU
-cyberpunk animated setups
+---
+
+## Roadmap de Automatizaciones
+
+Ideas para expandir este sistema en fases futuras:
+
+```bash
+setwall random          # wallpaper aleatorio de la carpeta
+```
+
+- Wallpapers rotativos por tiempo
+- Wallpapers generados por IA
+- Wallpapers dinámicos (video/animación)
+- Wallpapers por workspace
+- Wallpapers reactivos a métricas de CPU/GPU
+- Cyberpunk animated setups
+- Integración con OpenClaw para cambio por comando de voz o agente
