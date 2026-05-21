@@ -136,7 +136,7 @@ sudo pacman -Syu
 
 ---
 
-## PARTE 2 — El Talón de Aquiles: NVIDIA + Wayland ⚠️
+## PARTE 2 — El Talón de Aquiles: NVIDIA + Wayland ⚠️ (Debug pendiente)
 
 > **Esta es la sección más crítica del setup.** Tu GTX 1060 requiere drivers propietarios para que Hyprland funcione sin congelamientos. El driver `nouveau` que instalaste es solo temporal.
 
