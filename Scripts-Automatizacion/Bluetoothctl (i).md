@@ -74,4 +74,4 @@ notify-send "Bluetooth" "Conectado: $DEVICE_NAME"
 
 ## Links
 - [[Arch]] → PARTE 5 Bluetooth
-- [[OpenClaw_Lab_Setup_Abrahack]]
+- [[6. OpenClaw_Lab_Setup_Abrahack]]

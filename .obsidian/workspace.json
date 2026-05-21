@@ -27,16 +27,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Linux/Ollama + Phi3 mini.md",
+                "file": "VM Abrahack + IA/6. OpenClaw_Lab_Setup_Abrahack.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ollama + Phi3 mini"
+              "title": "6. OpenClaw_Lab_Setup_Abrahack"
+            }
+          },
+          {
+            "id": "b4a9ac231df336c8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Scripts-Automatizacion/Bluetoothctl (i).md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Bluetoothctl (i)"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -206,12 +220,19 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "25c02114de491f6e",
+  "active": "b4a9ac231df336c8",
   "lastOpenFiles": [
+    "Bluetooth automatization.md",
     "Scripts-Automatizacion/Bluetoothctl (i).md",
+    "VM Abrahack + IA/5. Podman_Setup.md",
+    "VM Abrahack + IA/6. OpenClaw_Lab_Setup_Abrahack.md",
+    "VM Abrahack + IA/4. Abrahack_Modulo_Infraestructura.md",
+    "VM Abrahack + IA/3. Modulo_Control_Ejecucion_Abrahack.md",
+    "VM Abrahack + IA/2. Guia_VM_Abrahack.md",
+    "VM Abrahack + IA/1. VM(install)_Abrahack.md",
+    "Linux/Hyprland (Wallpaper).md",
     "Linux/Ollama + Phi3 mini.md",
     "Linux/NvidiaArq.Pascal.md.md",
-    "Linux/Hyprland (Wallpaper).md",
     "Linux/Arch.md",
     "AWS(EC2)/README.md",
     "Templates/Idea.md",
@@ -221,7 +242,6 @@
     "Templates/Untitled.md",
     "Templates/Template-OpenClaw.md",
     "Templates",
-    "VM Abrahack + IA/OpenClaw_Lab_Setup_Abrahack.md",
     "Untitled.canvas"
   ]
 }
