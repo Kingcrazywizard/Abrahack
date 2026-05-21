@@ -27,7 +27,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Bluetoothctl (i).md",
+                "file": "Scripts-Automatizacion/Bluetoothctl (i).md",
                 "mode": "source",
                 "source": false
               },
@@ -206,10 +206,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "98e1e618e0ac3b9a",
+  "active": "096ba02b6f493ae7",
   "lastOpenFiles": [
     "Arch Linux Setup.md",
-    "Bluetoothctl (i).md",
+    "Scripts-Automatizacion/Bluetoothctl (i).md",
     "Linux/Arch.md",
     "Templates/Idea.md",
     "Templates/Idea",
