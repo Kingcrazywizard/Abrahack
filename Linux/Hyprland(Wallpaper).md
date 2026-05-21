@@ -1,4 +1,4 @@
-OBJETIVO
+OBJETIVO editar
 
 Que puedas cambiar wallpaper así:
 

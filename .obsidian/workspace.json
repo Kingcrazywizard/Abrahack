@@ -11,10 +11,14 @@
             "id": "bc7243dfd6440176",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Linux/Hyprland(Wallpaper).md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Hyprland(Wallpaper)"
             }
           }
         ]
@@ -189,6 +193,8 @@
   },
   "active": "bc7243dfd6440176",
   "lastOpenFiles": [
+    "Linux/Arch.md",
+    "Linux/Hyprland(Wallpaper).md",
     "VM Abrahack + IA/OpenClaw_Lab_Setup_Abrahack.md",
     "Untitled.canvas"
   ]
