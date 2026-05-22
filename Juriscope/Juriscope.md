@@ -1,0 +1,1 @@
+https://support.socrata.com/hc/en-us/articles/360051264053-Introduction-to-Socrata-py3
