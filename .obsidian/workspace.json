@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Linux/Ollama + Phi3 mini.md",
+                "file": "Abrahack (EC2)/7.AWS(EC2)+DNScrypt.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ollama + Phi3 mini"
+              "title": "7.AWS(EC2)+DNScrypt"
             }
           }
         ],
@@ -220,37 +220,39 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "096ba02b6f493ae7",
+  "active": "b4a9ac231df336c8",
   "lastOpenFiles": [
+    "Linux/NvidiaArq.Pascal.md.md",
+    "Linux/hyprlandUI.md",
+    "Linux/Hyprland (Wallpaper).md",
+    "Linux/Arch.md",
+    "Linux/Ollama + Phi3 mini.md",
+    "Untitled.base",
+    "Untitled 1.canvas",
+    "Untitled.canvas",
+    "2026-05-26.md",
+    "Linux/Keys protect.md",
+    "Abrahack (EC2)/AbrahackV4.0.md",
     "Abrahack + IA/5. Podman_Setup.md",
     "Abrahack + IA/6. OpenClaw_Lab_Setup_Abrahack.md",
     "Abrahack + IA/4. Abrahack_Modulo_Infraestructura.md",
     "Abrahack + IA/3. VM Modulo_Control_Ejecucion_Abrahack.md",
     "Juriscope/Juriscope.md",
     "Juriscope/monitor.py",
-    "Linux/Ollama + Phi3 mini.md",
-    "Linux/NvidiaArq.Pascal.md.md",
-    "Linux/Hyprland (Wallpaper).md",
-    "Linux/Arch.md",
-    "AWS(EC2)/4.AWS(EC2)AMIs(Manage).md",
-    "AWS(EC2)/3.AWS(EC2)+Iptables&Redsocks.md",
-    "AWS(EC2)/2.AWS(EC2)proxy+PC,Android.md",
-    "AWS(EC2)/1.AWS(EC2)+Privoxy&Tor.md",
+    "Abrahack (EC2)/4.AWS(EC2)AMIs(Manage).md",
+    "Abrahack (EC2)/3.AWS(EC2)+Iptables&Redsocks.md",
+    "Abrahack (EC2)/2.AWS(EC2)proxy+PC,Android.md",
+    "Abrahack (EC2)/1.AWS(EC2)+Privoxy&Tor.md",
     "MakeYourOwn/Readme.md",
     "2026-05-21.md",
-    "Untitled 1.canvas",
-    "Untitled.canvas",
     "Scripts-Automatizacion/Bluetoothctl (i).md",
     "Bluetooth automatization.md",
     "Abrahack + IA/2. VMAbrahack.md",
     "Abrahack + IA/1. VM(install)_Abrahack.md",
-    "AWS(EC2)/README.md",
+    "Abrahack (EC2)/README.md",
     "Templates/Idea.md",
-    "AWS(EC2)/5.AWS(EC2)+WireGuard(VPN).md",
-    "Arch Linux Setup.md",
+    "Abrahack (EC2)/5.AWS(EC2)+WireGuard(VPN).md",
     "Templates/Idea",
-    "Templates/Untitled.md",
-    "Templates/Template-OpenClaw.md",
     "Templates"
   ]
 }
